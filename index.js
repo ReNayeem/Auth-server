@@ -26,6 +26,21 @@ async function run() {
       res.send(items);
     });
 
+    //add new user
+    app.post('/users', async (req, res) => {
+      const newUser = req.body;
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    });
+
+    app.get('/addUser', async (req, res) => {
+      const username = req.query.username;
+      const query = { username: username };
+      const result = await userCollection.find(query).toArray();
+      res.send(result);
+
+    });
+
     //get user by email
     app.get('/userByEmail', async (req, res) => {
       const email = req.query.email;
@@ -33,6 +48,7 @@ async function run() {
       const cursor = userCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
+
     });
 
     app.put('/userByEmail2', async (req, res) => {
@@ -51,21 +67,6 @@ async function run() {
         options
       );
       res.send(result);
-    });
-
-    //add new user
-    app.post('/users', async (req, res) => {
-      const newUser = req.body;
-      const result = await userCollection.insertOne(newUser);
-      res.send(result);
-    });
-
-    app.get('/addUser', async (req, res) => {
-      const username = req.query.username;
-      const query = { username: username };
-      const result = await userCollection.find(query).toArray();
-      res.send(result);
-
     });
   }
   finally {
