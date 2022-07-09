@@ -52,6 +52,21 @@ async function run() {
       );
       res.send(result);
     });
+
+    //add new user
+    app.post('/users', async (req, res) => {
+      const newUser = req.body;
+      const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    });
+
+    app.get('/addUser', async (req, res) => {
+      const username = req.query.username;
+      const query = { username: username };
+      const result = await userCollection.find(query).toArray();
+      res.send(result);
+
+    });
   }
   finally {
 
