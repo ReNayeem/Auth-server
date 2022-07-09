@@ -33,7 +33,24 @@ async function run() {
       const cursor = userCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
+    });
 
+    app.put('/userByEmail2', async (req, res) => {
+      const email = req.query.email;
+      const user = req.body;
+      const filter = { email: email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          password: user.password
+        }
+      };
+      const result = await userCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
     });
   }
   finally {
